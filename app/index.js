@@ -242,6 +242,19 @@ ArchetypeGenerator.prototype.editor = function editor() {
   this.copy('editorconfig', '.editorconfig');
 };
 
+ArchetypeGenerator.prototype.app = function app() {
+  
+  // Scaffold Directories
+  this.mkdir('app');
+  this.mkdir('app/templates');
+  this.mkdir(path.join('app', this.cssDir));
+  this.mkdir(path.join('app', this.jsDir));
+  this.mkdir(path.join('app', this.imgDir));
+  this.mkdir(path.join('app', this.fontsDir));
+  this.mkdir(path.join('app', this.cssPreDir));
+
+};
+
 ArchetypeGenerator.prototype.templates = function templates() {
 
   // HTML5 Boilerplate template
@@ -307,17 +320,39 @@ ArchetypeGenerator.prototype.templates = function templates() {
   }
 };
 
+ArchetypeGenerator.prototype.archetype = function app() { 
+  var cb = this.async();
+
+  // Archetype
+  this.remote('kwaledesign', 'Archetype', function(err, remote) {
+    if (err) {
+      return cb(err);
+    }
+
+    // copy config.rb file
+    remote.template('config.rb', 'app/config.rb');
+    // copy Archetype components
+    //remote.template('sass/components', path.join('app', this.cssPreDir, 'components')); 
+//    remote.template('sass/components/', 'app/sass');
+  
+    //remote.template('sass/components/_buttons.scss', 'app/sass/components/_buttons.scss');
+
+    cb(); 
+  }.bind(this));
+};
 
 
-
+ArchetypeGenerator.prototype.archetypeDocs = function editor() {
+  this.copy('docs/index.md', 'app/docs/index.md');
+};
 
 /*
 ArchetypeGenerator.prototype.app = function app() {
   this.mkdir('app');
   this.mkdir('app/templates');
 
-  this.copy('_package.json', 'package.json');
-  this.copy('_bower.json', 'bower.json');
+  //this.copy('_package.json', 'package.json');
+  //this.copy('_bower.json', 'bower.json');
 };
 
 ArchetypeGenerator.prototype.projectfiles = function projectfiles() {
