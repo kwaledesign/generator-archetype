@@ -1,9 +1,11 @@
 'use strict';
 var util = require('util');
 var path = require('path');
+var globule = require('globule');
+var shelljs = require('shelljs');
+var spawn = require('child_process').spawn;
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
-
 
 var ArchetypeGenerator = module.exports = function ArchetypeGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
@@ -323,26 +325,35 @@ ArchetypeGenerator.prototype.templates = function templates() {
 ArchetypeGenerator.prototype.archetype = function app() { 
   var cb = this.async();
 
-  // Archetype
+  // Get Archetype and provide a "remote" object as a facade API
   this.remote('kwaledesign', 'Archetype', function(err, remote) {
     if (err) {
       return cb(err);
     }
-
+    
     // copy config.rb file
     remote.template('config.rb', 'app/config.rb');
-    // copy Archetype components
-    //remote.template('sass/components', path.join('app', this.cssPreDir, 'components')); 
-//    remote.template('sass/components/', 'app/sass');
-  
-    //remote.template('sass/components/_buttons.scss', 'app/sass/components/_buttons.scss');
+    // Archetype screen.scss
+    remote.template('sass/screen.scss', path.join('app', this.cssPreDir, 'screen.scss')); 
+
+    // Archetype Base
+    remote.directory('sass/base/', path.join('app', this.cssPreDir, 'base')); 
+    // Archetype Objects  
+    remote.directory('sass/objects/', path.join('app', this.cssPreDir, 'objects')); 
+    // Archetype Components
+    remote.directory('sass/components/', path.join('app', this.cssPreDir, 'components')); 
+    // Archetype Layout
+    remote.directory('sass/layout/', path.join('app', this.cssPreDir, 'layout')); 
+    // Archetype Temp
+    remote.directory('sass/temp/', path.join('app', this.cssPreDir, 'temp')); 
 
     cb(); 
   }.bind(this));
 };
 
-
 ArchetypeGenerator.prototype.archetypeDocs = function editor() {
+  var cb = this.async();
+  
   this.copy('docs/index.md', 'app/docs/index.md');
 };
 
