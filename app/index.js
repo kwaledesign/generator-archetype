@@ -31,13 +31,10 @@ var ArchetypeGenerator = module.exports = function Generator(args, options) {
   };
 
   this.on('end', function () {
-
-    // Clean up temp files
-    // spawn('rm', ['-r', '.jekyll'], { stdio: 'inherit' });
-
     // Install Grunt and Bower dependencies
     this.installDependencies({ skipInstall: options['skip-install'] });
-  });
+  }); 
+  
 };
 
 util.inherits(ArchetypeGenerator, yeoman.generators.Base);

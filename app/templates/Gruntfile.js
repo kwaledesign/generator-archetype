@@ -263,27 +263,8 @@ module.exports = function (grunt) {
         }]
       }
     },
-    copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%%= yeoman.app %>',
-          src: [
-            // Usemin moves css and js files with concat.
-            // Add other files and patterns your site
-            // reqires for distrobution here, e.g., Bower components that
-            // aren't in a usemin block.
-            'bower_components/jquery.min.js',
-            // Copy moves asset files and directories
-            '*.{ico,png}',
-            '<%= imgDir %>/**/*',
-            '<%= fontsDir %>/**/*'
-          ],
-          dest: '<%%= yeoman.dist %>'
-        }]
-      }
-    },
+//removed grunt copy task...did it blow up???
+
     rev: {
       options: {
         length: 4
