@@ -1,4 +1,4 @@
-// Generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>. Yo Jekyll!
+// Generated on <%= (new Date).toISOString().split('T')[0] %> using <%= pkg.name %> <%= pkg.version %>. Yo, Archetype!
 'use strict';
 var liveReloadPort = 35729;
 var lrSnippet = require('connect-livereload')({port: liveReloadPort});
@@ -32,7 +32,6 @@ module.exports = function (grunt) {
           livereload: liveReloadPort
         },
         files: [
-          '.jekyll/**/*.html',
           '{.tmp,<%%= yeoman.app %>}/<%= cssDir %>/**/*.css',
           '{.tmp,<%%= yeoman.app %>}/<%%= js %>/**/*.js',
           '<%%= yeoman.app %>/<%= imgDir %>/**/*.{gif,jpg,jpeg,png,svg,webp}'
@@ -51,7 +50,6 @@ module.exports = function (grunt) {
             return [
               lrSnippet,
               mountFolder(connect, '.tmp'),
-              mountFolder(connect, '.jekyll'),
               mountFolder(connect, yeomanConfig.app)
             ];
           }
@@ -82,8 +80,6 @@ module.exports = function (grunt) {
         path: 'http://localhost:<%%= connect.options.port %>'
       }
     },
-    // Running Jekyll also cleans all non-git files from the target directory
-    // If you've added anything to Jekyll's 'keep_files', add them here as well.
     clean: {
       dist: {
         files: [{
@@ -95,14 +91,14 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: ['.tmp', '.jekyll']
+      server: ['.tmp']
     },
     sass: {
       options: {
         bundleExec: true,
         debugInfo: false,
         lineNumbers: false,
-        loadPath: 'app/_bower_components'
+        loadPath: 'app/bower_components'
       },
       dist: {
         files: [{
@@ -143,7 +139,7 @@ module.exports = function (grunt) {
         httpImagesPath: '/<%= imgDir %>',
         httpGeneratedImagesPath: '/<%= imgDir %>/generated',
         outputStyle: 'expanded',
-        raw: 'asset_cache_buster :none \nextensions_dir = "<%%= yeoman.app %>/_bower_components"\n'
+        raw: 'asset_cache_buster :none \nextensions_dir = "<%%= yeoman.app %>/bower_components"\n'
       },
       dist: {
         options: {
@@ -166,7 +162,7 @@ module.exports = function (grunt) {
         '{.tmp,<%%= yeoman.app %>}/<%= jsDir %>/**/*.js',
         'test/spec/**/*.js',
         '!<%%= yeoman.app %>/<%= jsDir %>/vendor/**/*',
-        '!<%%= yeoman.app %>/_bower_components/**/*'
+        '!<%%= yeoman.app %>/bower_components/**/*'
       ],
       report: [
         '{.tmp,<%%= yeoman.app %>}/<%= jsDir %>/**/*.js',
@@ -278,7 +274,7 @@ module.exports = function (grunt) {
             // Add other files and patterns your site
             // reqires for distrobution here, e.g., Bower components that
             // aren't in a usemin block.
-            <% if (!h5bpJs) { %>// <% } %>'_bower_components/jquery.min.js',
+            'bower_components/jquery.min.js',
             // Copy moves asset files and directories
             '*.{ico,png}',
             '<%= imgDir %>/**/*',

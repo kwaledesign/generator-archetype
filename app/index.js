@@ -7,6 +7,42 @@ var spawn = require('child_process').spawn;
 var yeoman = require('yeoman-generator');
 var chalk = require('chalk');
 
+var ArchetypeGenerator = module.exports = function Generator(args, options) {
+  yeoman.generators.Base.apply(this, arguments);
+
+  // Exit if Ruby dependencies aren't installed
+  var dependenciesInstalled = ['bundle', 'ruby'].every(function (depend) {
+    return shelljs.which(depend);
+  });
+
+  if (!dependenciesInstalled) {
+    console.log('Looks like you\'re missing some dependencies.' +
+      '\nMake sure ' + chalk.white('Ruby') + ' and the ' + chalk.white('Bundler gem') + ' are installed, then run again.');
+    shelljs.exit(1);
+  }
+
+  // Get static info for templating
+  this.appname = path.basename(process.cwd());
+  this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
+  this.gitInfo = {
+    name: shelljs.exec('git config user.name', {silent: true}).output.replace(/\n/g, ''),
+    email: shelljs.exec('git config user.email', {silent: true}).output.replace(/\n/g, ''),
+    github: shelljs.exec('git config github.user', {silent: true}).output.replace(/\n/g, ''),
+  };
+
+  this.on('end', function () {
+
+    // Clean up temp files
+    // spawn('rm', ['-r', '.jekyll'], { stdio: 'inherit' });
+
+    // Install Grunt and Bower dependencies
+    this.installDependencies({ skipInstall: options['skip-install'] });
+  });
+};
+
+util.inherits(ArchetypeGenerator, yeoman.generators.Base);
+
+/*
 var ArchetypeGenerator = module.exports = function ArchetypeGenerator(args, options, config) {
   yeoman.generators.Base.apply(this, arguments);
 
@@ -18,28 +54,8 @@ var ArchetypeGenerator = module.exports = function ArchetypeGenerator(args, opti
 };
 
 util.inherits(ArchetypeGenerator, yeoman.generators.Base);
-
-/*
-ArchetypeGenerator.prototype.askFor = function askFor() {
-  var cb = this.async();
-
-  // have Yeoman greet the user.
-  console.log(this.yeoman);
-
-  var prompts = [{
-    type: 'confirm',
-    name: 'someOption',
-    message: 'Would you like to enable this option?',
-    default: true
-  }];
-
-  this.prompt(prompts, function (props) {
-    this.someOption = props.someOption;
-
-    cb();
-  }.bind(this));
-};
 */
+
 
 // User input
 ArchetypeGenerator.prototype.askForAuthor = function askForAuthor() {
@@ -347,109 +363,11 @@ ArchetypeGenerator.prototype.archetype = function app() {
     // Archetype Temp
     remote.directory('sass/temp/', path.join('app', this.cssPreDir, 'temp')); 
 
+    // Archetype Docs (Styleguide and Pattern Library powered by Dexy)
+    remote.directory('docs', 'app/docs');
+
     cb(); 
   }.bind(this));
 };
-
-ArchetypeGenerator.prototype.archetypeDocs = function editor() {
-  var cb = this.async();
-  
-  this.copy('docs/index.md', 'app/docs/index.md');
-};
-
-/*
-ArchetypeGenerator.prototype.app = function app() {
-  this.mkdir('app');
-  this.mkdir('app/templates');
-
-  //this.copy('_package.json', 'package.json');
-  //this.copy('_bower.json', 'bower.json');
-};
-
-ArchetypeGenerator.prototype.projectfiles = function projectfiles() {
-  this.copy('editorconfig', '.editorconfig');
-  this.copy('jshintrc', '.jshintrc');
-};
-
-
-ArchetypeGenerator.prototype.directories = function directories() {
-
-  // Scaffold dirs
-// this.mkdir(path.join('app', this.cssDir));
-   this.mkdir('app/sass');
-};
-
-
-ArchetypeGenerator.prototype.templates = function templates() {
-
-  // get archetype 
-  this.remote('kwaledesign', 'Archetype', function(err, remote) {
-//    remote.copy('sass/', 'app/sass');
-//    remote.copy('docs/', 'app/docs');
-    remote.copy('config.rb/', 'app/config.rb');
-  });
-};
-*/
-
-
-
-
-
-/****  generated   ****/
-
-/*'use strict';
-var util = require('util');
-var path = require('path');
-var yeoman = require('yeoman-generator');
-
-
-var ArchetypeGenerator = module.exports = function ArchetypeGenerator(args, options, config) {
-  yeoman.generators.Base.apply(this, arguments);
-
-  this.on('end', function () {
-    this.installDependencies({ skipInstall: options['skip-install'] });
-  });
-
-  this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
-};
-
-util.inherits(ArchetypeGenerator, yeoman.generators.Base);
-
-ArchetypeGenerator.prototype.askFor = function askFor() {
-  var cb = this.async();
-
-  // have Yeoman greet the user.
-  console.log(this.yeoman);
-
-  var prompts = [{
-    type: 'confirm',
-    name: 'someOption',
-    message: 'Would you like to enable this option?',
-    default: true
-  }];
-
-  this.prompt(prompts, function (props) {
-    this.someOption = props.someOption;
-
-    cb();
-  }.bind(this));
-};
-
-
-ArchetypeGenerator.prototype.app = function app() {
-  this.mkdir('app');
-  this.mkdir('app/templates');
-
-  this.copy('_package.json', 'package.json');
-  this.copy('_bower.json', 'bower.json');
-};
-
-ArchetypeGenerator.prototype.projectfiles = function projectfiles() {
-  this.copy('editorconfig', '.editorconfig');
-  this.copy('jshintrc', '.jshintrc');
-};*/
-
-
-
 
 
