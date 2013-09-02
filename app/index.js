@@ -154,18 +154,19 @@ ArchetypeGenerator.prototype.askForTemplates = function askForTemplates() {
   console.log(chalk.yellow('\nInclude  HTML5★ Boilerplate?') + ' ☛');
 
   var prompts = [{
-    name: 'h5bp',
-    type: 'confirm',
-    message: 'Do you want to use HTML5★ Boilerplate?',
-    default: 'Yes'
+    name: 'templateType',
+    type: 'list',
+    message: 'Do you want to use a template?',
+    choices: ['HTML5 ★ Boilerplate', 'none']
   }];
+
 
   this.prompt(prompts, function (props) {
 
-    if (props.h5bp === 'Yes') {
+    if (props.templateType === 'HTML5 ★ Boilerplate') {
       this.templateType = 'h5bp';
     }
-    else if (!props.templateType === 'Yes') {
+    else if (!props.templateType === 'HTML5 ★ Boilerplate') {
       this.templateType = 'none';
     }
 
