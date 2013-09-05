@@ -339,8 +339,10 @@ ArchetypeGenerator.prototype.archetype = function app() {
       return cb(err);
     }
     
-    // copy config.rb file
-    remote.template('config.rb', 'app/config.rb');
+    // Get config.rb file from templates/ 
+    // (not done remotely to allow lo-dash template for directory names)
+    this.template('_config.rb', 'app/config.rb');
+
     // Archetype screen.scss
     remote.template('sass/screen.scss', path.join('app', this.cssPreDir, 'screen.scss')); 
 
