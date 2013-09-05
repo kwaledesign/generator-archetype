@@ -277,7 +277,7 @@ ArchetypeGenerator.prototype.templates = function templates() {
     var cb = this.async();
 
       // H5BP index.html
-      this.template('conditional/template-h5bp/index.html', 'app/index.html');
+      this.template('conditional/template-h5bp/_index.html', 'app/index.html');
 
     // Get h5bp from git repository
     this.remote('h5bp', 'html5-boilerplate', 'v4.2.0', function (err, remote) {
