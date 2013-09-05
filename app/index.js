@@ -276,6 +276,9 @@ ArchetypeGenerator.prototype.templates = function templates() {
   if (this.templateType === 'h5bp') {
     var cb = this.async();
 
+      // H5BP index.html
+      this.template('conditional/template-h5bp/index.html', 'app/index.html');
+
     // Get h5bp from git repository
     this.remote('h5bp', 'html5-boilerplate', 'v4.2.0', function (err, remote) {
       if (err) {
@@ -287,14 +290,6 @@ ArchetypeGenerator.prototype.templates = function templates() {
       remote.copy('crossdomain.xml', 'app/crossdomain.xml');
       remote.copy('LICENSE.md', 'app/_h5bp-docs/LICENSE.md');
       remote.copy('robots.txt', 'app/robots.txt');
-
-      // Css boilerplate
-/*      if (this.h5bpCss) {
-        remote.directory('css', path.join('app', this.cssDir));
-      }
-      else {
-        this.write(path.join('app', this.cssDir, 'main.css'), '');
-      }*/
 
       // Js boilerplate
       // Ignore vendor diectory because we're handling components with Bower
@@ -329,9 +324,9 @@ ArchetypeGenerator.prototype.templates = function templates() {
     }.bind(this));
 
     // Google analytincs include
-    if (this.h5bpAnalytics) {
+/*    if (this.h5bpAnalytics) {
       this.copy('conditional/template-h5bp/_includes/googleanalytics.html', 'app/_includes/googleanalytics.html');
-    }
+    }*/
   }
 };
 
