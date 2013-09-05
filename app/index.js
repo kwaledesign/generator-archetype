@@ -16,8 +16,7 @@ var ArchetypeGenerator = module.exports = function Generator(args, options) {
   });
 
   if (!dependenciesInstalled) {
-    console.log('Looks like you\'re missing some dependencies.' +
-      '\nMake sure ' + chalk.white('Ruby') + ' and the ' + chalk.white('Bundler gem') + ' are installed, then run again.');
+    console.log('Looks like you\'re missing some dependencies.' + '\nMake sure you have installed:' + chalk.white('\nRuby') + chalk.white('\nBundler gem') + chalk.white('\nArchetype-Utilities') + chalk.white('\nColorkit') + chalk.white('\nModular-Scale') + chalk.white('\nBreakpoint') + '\n...then run again.');
     shelljs.exit(1);
   }
 
